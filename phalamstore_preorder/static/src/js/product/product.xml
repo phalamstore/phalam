@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="sale.Product" t-inherit-mode="extension">
+        <xpath expr="//td[2]" position="inside">
+                <div>
+                    <label class="form-label fw-bold">Delivery Option:</label>
+                    <select
+                        class="form-select mb-2 delivery_option_input"
+                        t-att-id="'delivery_option_' + this.props.product_tmpl_id"
+                        t-att-data-product-id="this.props.product_tmpl_id"
+                        t-on-change="(ev) => this.onDeliveryOptionChange(ev, this.props.product_tmpl_id)"
+                    >
+                        <option
+                            value="today"
+                            t-att-disabled="this.props.product_qty === 0"
+                            t-att-selected="this.props.product_qty !== 0"
+                        >Today</option>
+
+                        <option
+                            value="preorder"
+                            t-att-selected="this.props.product_qty === 0"
+                        >Preorder</option>
+                    </select>
+
+
+                    <div
+                        class="preorder_date_picker d-none"
+                        t-att-id="'preorder_date_picker_' + this.props.product_tmpl_id"
+                    >
+                        <label class="form-label small">Select Delivery Date:</label>
+                        <input
+                            type="date"
+                            class="form-control delivery_date_input"
+                            t-att-id="'delivery_date_' + this.props.product_tmpl_id"
+                            t-on-change="(ev) => this.onDateChange(ev, this.props.product_tmpl_id)"
+                        />
+                    </div>
+                </div>
+        </xpath>
+    </t>
+</templates>

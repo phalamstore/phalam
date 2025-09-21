@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="cart_lines_with_date" inherit_id="website_sale.cart_lines">
+        <xpath expr="//t[@t-if='line.product_id']/div[2]" position="after">
+            <div>
+                <label for="delivery_option_#{line.id}" class="form-label fw-bold">Delivery Option:</label>
+                <select id="delivery_option_#{line.id}"
+                        name="delivery_option_#{line.id}"
+                        class="form-select mb-2 delivery_option_input"
+                        t-att-data-line-id="line.id"
+                        t-att-disabled="line.product_id.qty_available == 0">
+                    <option value="today" t-att-selected="line.product_id.qty_available > 0 and not line.delivery_date">Today</option>
+                    <option value="preorder" t-att-selected="line.product_id.qty_available == 0 or line.delivery_date">Preorder</option>
+                </select>
+
+                <div id="preorder_date_picker_#{line.id}"
+                     class="preorder_date_picker d-none">
+                    <label for="delivery_date_#{line.id}" class="form-label small">Select Delivery Date:</label>
+                    <input type="date"
+                           id="delivery_date_#{line.id}"
+                           name="delivery_date_#{line.id}"
+                           class="form-control delivery_date_input"
+                           t-att-data-line-id="line.id"
+                           t-att-value="(line.delivery_date or '').strftime('%Y-%m-%d') if line.delivery_date else ''"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template inherit_id='website_sale.product' id="product_preorder_date">
+        <xpath expr='//div[@id="product_detail_main"]/div[2]/h1' position='after'>
+            <div class="my-3">
+                <label for="delivery_option" class="form-label fw-bold">Delivery Option:</label>
+                <select id="delivery_option" name="delivery_option" class="form-select mb-2" t-att-disabled="product.qty_available == 0">
+                    <option value="today" t-att-selected="product.qty_available > 0">Today</option>
+                    <option value="preorder" t-att-selected="product.qty_available == 0">Preorder</option>
+                </select>
+
+                <div id="preorder_date_picker" t-attf-class="{{'d-block' if product.qty_available == 0 else 'd-none'}}">
+                    <label for="preorder_date" class="form-label">Select Preorder Date:</label>
+                    <input type="date" id="preorder_date" name="preorder_date" class="form-control"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
